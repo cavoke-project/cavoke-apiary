@@ -3,8 +3,8 @@ info:
     version: '0.1.0'
     title: 'Cavoke'
     description: 'API for cavoke interaction between main server and clients'
-host: localhost:8080
-basePath: /
+servers:
+    - url: 'localhost:8080'
 paths:
     /health:
         get:
