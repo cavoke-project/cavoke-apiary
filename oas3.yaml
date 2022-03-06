@@ -104,7 +104,7 @@ paths:
     /sessions/create:
         post:
             summary: 'Create a session (room to game pair) from requested cavoke game'
-            operationId: createSession
+            operationId: createSession_
             parameters:
                 - in: query
                   name: game_id
@@ -142,6 +142,13 @@ paths:
             summary: 'Join a session (will be room in future) by an invite code'
             operationId: joinSession
             parameters:
+                - in: query
+                  name: user_id
+                  schema:
+                      $ref: '#/components/schemas/UserId'
+                  required: true
+                  description: 'User id'
+                  example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
                 - in: query
                   name: invite_code
                   schema:
