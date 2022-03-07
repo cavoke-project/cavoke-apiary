@@ -133,8 +133,8 @@ paths:
                                 $ref: '#/components/schemas/Error'
     /rooms/join:
         post:
-            summary: 'Join a session (will be room in future) by an invite code'
-            operationId: joinSession
+            summary: 'Join a room by an invite code'
+            operationId: joinRoom
             parameters:
                 - in: query
                   name: user_id
