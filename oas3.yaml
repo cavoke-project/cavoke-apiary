@@ -373,10 +373,8 @@ components:
           $ref: '#/components/schemas/RoomId'
         invite_code:
           $ref: '#/components/schemas/InviteCode'
-        active_sessions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SessionInfo'
+        active_session:
+          $ref: '#/components/schemas/SessionInfo'
         host_member:
           $ref: '#/components/schemas/UserId'
         members:
@@ -384,6 +382,11 @@ components:
           items:
             $ref: '#/components/schemas/User'
           description: 'All users present in this room'
+      required:
+        - room_id
+        - invite_code
+        - host_member
+        - members
     User:
       type: object
       description: ""
@@ -393,6 +396,9 @@ components:
         display_name:
           type: string
           example: John Smith
+      required:
+        - user_id
+        - display_name
     Player:
       type: object
       description: "User in specific game with player_id"
@@ -403,6 +409,9 @@ components:
           example: 0
         user_id:
           $ref: '#/components/schemas/UserId'
+      required:
+        - player_id
+        - user_id
     SessionCreationRequest:
       type: object
       properties:
@@ -416,6 +425,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Player'
+      required:
+        - game_id
+        - game_configuration
+        - players
     SessionInfo:
       type: object
       description: "Metadata about a running session (room to game pair)"
@@ -428,6 +441,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Player'
+      required:
+        - session_id
+        - game_id
+        - players
     UserId:
       type: string
       format: uuid
