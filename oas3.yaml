@@ -1,7 +1,8 @@
 openapi: 3.0.0
 info:
-    version: '0.0.4'
-    title: 'cavoke'
+    version: '0.1.0'
+    title: 'Cavoke'
+    description: 'API for cavoke interaction between main server and clients'
 servers:
     - url: 'localhost:8080'
 paths:
@@ -101,18 +102,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
-    /sessions/create:
+    /rooms/create:
         post:
-            summary: 'Create a session (room to game pair) from requested cavoke game'
-            operationId: createSession_
+            summary: 'Create a room with given host'
+            operationId: createRoom
             parameters:
-                - in: query
-                  name: game_id
-                  schema:
-                    $ref: '#/components/schemas/GameId'
-                  required: true
-                  description: 'String id of the game to get'
-                  example: tictactoe
                 - in: query
                   name: user_id
                   schema:
@@ -126,21 +120,21 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SessionInfo'
+                                $ref: '#/components/schemas/RoomInfo'
                 '400':
                     description: 'Bad request'
-                '404':
-                    description: 'No game with such game id'
+                '403':
+                    description: 'Forbidden'
                 default:
                     description: Unexpected error
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
-    /sessions/join:
+    /rooms/join:
         post:
-            summary: 'Join a session (will be room in future) by an invite code'
-            operationId: joinSession
+            summary: 'Join a room by an invite code'
+            operationId: joinRoom
             parameters:
                 - in: query
                   name: user_id
@@ -162,9 +156,92 @@ paths:
                     content:
                         application/json:
                             schema:
-                              $ref: '#/components/schemas/SessionInfo' # TODO will be room in future
+                              $ref: '#/components/schemas/RoomInfo'
                 '404':
                     description: 'No session with such invite code'
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /rooms/{room_id}/get_info:
+        get:
+            summary: 'Information about room'
+            operationId: infoRoom
+            parameters:
+                - in: path
+                  name: room_id
+                  schema:
+                    $ref: '#/components/schemas/RoomId'
+                  required: true
+                  description: 'Room id'
+                  example: b2dbce0f-ceef-4bdc-b4af-5199139044e2
+                - in: query
+                  name: user_id
+                  schema:
+                      $ref: '#/components/schemas/UserId'
+                  required: true
+                  description: 'User id'
+                  example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
+            responses:
+                '200':
+                    description: 'Created successfully'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RoomInfo'
+                '400':
+                    description: 'Bad request'
+                '403':  
+                    description: 'Forbidden'
+                '404':
+                    description: 'No game with such game id'
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /rooms/{room_id}/create_session:
+        post:
+            summary: 'Create a session (room to game pair) from requested cavoke game'
+            operationId: createSession
+            parameters:
+                - in: path
+                  name: room_id
+                  schema:
+                    $ref: '#/components/schemas/RoomId'
+                  required: true
+                  description: 'Room id'
+                  example: b2dbce0f-ceef-4bdc-b4af-5199139044e2
+                - in: query
+                  name: user_id
+                  schema:
+                      $ref: '#/components/schemas/UserId'
+                  required: true
+                  description: 'User id'
+                  example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
+            requestBody:
+              description: Optional description in *Markdown*
+              required: true
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/SessionCreationRequest'
+            responses:
+                '200':
+                    description: 'Created successfully'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SessionInfo'
+                '400':
+                    description: 'Bad request'
+                '403':  
+                    description: 'Forbidden'
+                '404':
+                    description: 'No game with such game id'
                 default:
                     description: Unexpected error
                     content:
@@ -288,25 +365,99 @@ components:
           example: 'XOO O OXO'
       required:
         - state
-    SessionInfo:
+    RoomInfo:
       type: object
-      description: "Metadata about running session (room to game pair). Warning: some of this will become room (e.g. invite_code is most certainly about a room, and not session)"
+      description: "Metadata about a room"
+      properties:
+        room_id:
+          $ref: '#/components/schemas/RoomId'
+        invite_code:
+          $ref: '#/components/schemas/InviteCode'
+        active_session:
+          $ref: '#/components/schemas/SessionInfo'
+        host_member:
+          $ref: '#/components/schemas/UserId'
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+          description: 'All users present in this room'
+      required:
+        - room_id
+        - invite_code
+        - host_member
+        - members
+    User:
+      type: object
+      description: ""
+      properties:
+        user_id: 
+          $ref: '#/components/schemas/UserId'
+        display_name:
+          type: string
+          example: John Smith
+      required:
+        - user_id
+        - display_name
+    Player:
+      type: object
+      description: "User in specific game with player_id"
+      properties:
+        player_id:
+          type: integer
+          format: int32
+          example: 0
+        user_id:
+          $ref: '#/components/schemas/UserId'
+      required:
+        - player_id
+        - user_id
+    SessionCreationRequest:
+      type: object
       properties:
         game_id:
           $ref: '#/components/schemas/GameId'
+        game_configuration:
+          type: string
+          description: 'Settings for the game. For instance, players count, grid size, etc.'
+          example: '{"grid_size": 3, "singleplayer": true}'
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+      required:
+        - game_id
+        - game_configuration
+        - players
+    SessionInfo:
+      type: object
+      description: "Metadata about a running session (room to game pair)"
+      properties:
         session_id:
           $ref: '#/components/schemas/SessionId'
-        invite_code:
-          $ref: '#/components/schemas/InviteCode'
+        game_id:
+          $ref: '#/components/schemas/GameId'
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+      required:
+        - session_id
+        - game_id
+        - players
     UserId:
       type: string
       format: uuid
-      description: 'User identifier acquired from user on room join'
+      description: 'User identifier from auth engine'
       example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
     GameId:
       type: string
       example: tictactoe
-      description: 'game identifier'
+      description: 'cavoke game unique id'
+    RoomId:
+      type: string
+      format: uuid
+      example: b2dbce0f-ceef-4bdc-b4af-5199139044e2
     SessionId:
       type: string
       format: uuid
