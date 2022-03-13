@@ -517,6 +517,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /sessions/get_info_by_invite_code:
+    get:
+      summary: "Session information by invite code"
+      operationId: sessionInfoByInvite
+      parameters:
+        - in: query
+          name: user_id
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: true
+          description: "User id"
+          example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
+        - in: query
+          name: invite_code
+          schema:
+            $ref: "#/components/schemas/InviteCode"
+          required: true
+      responses:
+        "200":
+          description: "successfully got the info"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionInfo"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No session with such game id"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     GameInfo:
