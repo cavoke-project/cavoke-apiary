@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "0.1.0"
+  version: "0.1.1"
   title: "Cavoke"
   description: "API for cavoke interaction between main server and clients"
 servers:
@@ -102,152 +102,152 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /rooms/create:
-    post:
-      summary: "Create a room with given host"
-      operationId: createRoom
-      parameters:
-        - in: query
-          name: user_id
-          schema:
-            $ref: "#/components/schemas/UserId"
-          required: true
-          description: "User id"
-          example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
-      responses:
-        "200":
-          description: "Created successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RoomInfo"
-        "400":
-          description: "Bad request"
-        "403":
-          description: "Forbidden"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /rooms/join:
-    post:
-      summary: "Join a room by an invite code"
-      operationId: joinRoom
-      parameters:
-        - in: query
-          name: user_id
-          schema:
-            $ref: "#/components/schemas/UserId"
-          required: true
-          description: "User id"
-          example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
-        - in: query
-          name: invite_code
-          schema:
-            $ref: "#/components/schemas/InviteCode"
-          required: true
-          description: "Invite code"
-          example: 239566
-      responses:
-        "200":
-          description: "Joined successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RoomInfo"
-        "404":
-          description: "No session with such invite code"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /rooms/{room_id}/get_info:
-    get:
-      summary: "Information about room"
-      operationId: infoRoom
-      parameters:
-        - in: path
-          name: room_id
-          schema:
-            $ref: "#/components/schemas/RoomId"
-          required: true
-          description: "Room id"
-          example: b2dbce0f-ceef-4bdc-b4af-5199139044e2
-        - in: query
-          name: user_id
-          schema:
-            $ref: "#/components/schemas/UserId"
-          required: true
-          description: "User id"
-          example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
-      responses:
-        "200":
-          description: "Created successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RoomInfo"
-        "400":
-          description: "Bad request"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "No game with such game id"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /rooms/{room_id}/create_session:
-    post:
-      summary: "Create a session (room to game pair) from requested cavoke game"
-      operationId: createSession
-      parameters:
-        - in: path
-          name: room_id
-          schema:
-            $ref: "#/components/schemas/RoomId"
-          required: true
-          description: "Room id"
-          example: b2dbce0f-ceef-4bdc-b4af-5199139044e2
-        - in: query
-          name: user_id
-          schema:
-            $ref: "#/components/schemas/UserId"
-          required: true
-          description: "User id"
-          example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
-      requestBody:
-        description: Optional description in *Markdown*
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SessionCreationRequest"
-      responses:
-        "200":
-          description: "Created successfully"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SessionInfo"
-        "400":
-          description: "Bad request"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "No game with such game id"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+  # /rooms/create:
+  #   post:
+  #     summary: "Create a room with given host"
+  #     operationId: createRoom
+  #     parameters:
+  #       - in: query
+  #         name: user_id
+  #         schema:
+  #           $ref: "#/components/schemas/UserId"
+  #         required: true
+  #         description: "User id"
+  #         example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
+  #     responses:
+  #       "200":
+  #         description: "Created successfully"
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/RoomInfo"
+  #       "400":
+  #         description: "Bad request"
+  #       "403":
+  #         description: "Forbidden"
+  #       default:
+  #         description: Unexpected error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/Error"
+  # /rooms/join:
+  #   post:
+  #     summary: "Join a room by an invite code"
+  #     operationId: joinRoom
+  #     parameters:
+  #       - in: query
+  #         name: user_id
+  #         schema:
+  #           $ref: "#/components/schemas/UserId"
+  #         required: true
+  #         description: "User id"
+  #         example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
+  #       - in: query
+  #         name: invite_code
+  #         schema:
+  #           $ref: "#/components/schemas/InviteCode"
+  #         required: true
+  #         description: "Invite code"
+  #         example: 239566
+  #     responses:
+  #       "200":
+  #         description: "Joined successfully"
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/RoomInfo"
+  #       "404":
+  #         description: "No session with such invite code"
+  #       default:
+  #         description: Unexpected error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/Error"
+  # /rooms/{room_id}/get_info:
+  #   get:
+  #     summary: "Information about room"
+  #     operationId: infoRoom
+  #     parameters:
+  #       - in: path
+  #         name: room_id
+  #         schema:
+  #           $ref: "#/components/schemas/RoomId"
+  #         required: true
+  #         description: "Room id"
+  #         example: b2dbce0f-ceef-4bdc-b4af-5199139044e2
+  #       - in: query
+  #         name: user_id
+  #         schema:
+  #           $ref: "#/components/schemas/UserId"
+  #         required: true
+  #         description: "User id"
+  #         example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
+  #     responses:
+  #       "200":
+  #         description: "Created successfully"
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/RoomInfo"
+  #       "400":
+  #         description: "Bad request"
+  #       "403":
+  #         description: "Forbidden"
+  #       "404":
+  #         description: "No game with such game id"
+  #       default:
+  #         description: Unexpected error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/Error"
+  # /rooms/{room_id}/create_session:
+  #   post:
+  #     summary: "Create a session (room to game pair) from requested cavoke game"
+  #     operationId: createSession
+  #     parameters:
+  #       - in: path
+  #         name: room_id
+  #         schema:
+  #           $ref: "#/components/schemas/RoomId"
+  #         required: true
+  #         description: "Room id"
+  #         example: b2dbce0f-ceef-4bdc-b4af-5199139044e2
+  #       - in: query
+  #         name: user_id
+  #         schema:
+  #           $ref: "#/components/schemas/UserId"
+  #         required: true
+  #         description: "User id"
+  #         example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
+  #     requestBody:
+  #       description: Optional description in *Markdown*
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/SessionCreationRequest"
+  #     responses:
+  #       "200":
+  #         description: "Created successfully"
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/SessionInfo"
+  #       "400":
+  #         description: "Bad request"
+  #       "403":
+  #         description: "Forbidden"
+  #       "404":
+  #         description: "No game with such game id"
+  #       default:
+  #         description: Unexpected error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/Error"
   /play/{session_id}/send_move:
     post:
       summary: "Send a move from QML game"
