@@ -398,7 +398,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
   /sessions/{session_id}/validate:
-    get:
+    post:
       summary: "Check if the host can launch the game with current config"
       operationId: validateSession
       parameters:
