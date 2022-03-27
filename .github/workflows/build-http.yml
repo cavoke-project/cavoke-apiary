@@ -1,0 +1,25 @@
+name: build-http
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  build-qt-httpclient:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate Qt5 Http Client
+        uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          generator: cpp-qt-client
+          config-file: oas3.yml
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ env.BRANCH }}
+          force: true
+env:
+  BRANCH: build-httpclient
