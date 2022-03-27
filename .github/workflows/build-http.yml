@@ -29,7 +29,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ env.BRANCH }}
           force: true
-          directory: cpp-qt-client-clients
+          directory: cpp-qt-client-client
 env:
   BRANCH: build-httpclient
   OAS_FILE: oas3.yaml
