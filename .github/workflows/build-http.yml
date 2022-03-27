@@ -16,7 +16,7 @@ jobs:
           generator: cpp-qt-client
           openapi-file: ${{ env.OAS_FILE }}
       - name: Change Qt5 to Qt with QT_MAJOR_VERSION
-        run: sed -i 's;Qt5;Qt${QT_MAJOR_VERSION};g' cpp-qt-client/client/CMakeLists.txt
+        run: sed -i 's;Qt5;Qt${QT_MAJOR_VERSION};g' cpp-qt-client-client/client/CMakeLists.txt
       - name: Git add & commit
         run: |
           cd cpp-qt-client-client
