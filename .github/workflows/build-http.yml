@@ -15,6 +15,10 @@ jobs:
         with:
           generator: cpp-qt-client
           openapi-file: ${{ env.OAS_FILE }}
+      - name: Git add & commit
+        run: |
+          git add -A
+          git commit -m "Build Qt5 Http Client"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
