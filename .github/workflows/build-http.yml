@@ -16,7 +16,12 @@ jobs:
           generator: cpp-qt-client
           openapi-file: ${{ env.OAS_FILE }}
       - name: Change Qt5 to Qt with QT_MAJOR_VERSION
-        run: sed -i 's;Qt5;Qt${QT_MAJOR_VERSION};g' cpp-qt-client-client/client/CMakeLists.txt
+        run: |
+          cd cpp-qt-client-client/client
+          perl -pi -e 's;project\(client\);project(openapi);' CMakeLists.txt
+          perl -pi -e 's;(?<=find_package\(Qt5Network REQUIRED\));\nfind_package(Qt5Gui REQUIRED)' CMakeLists.txt
+          perl -pi -e 's;(?<=Qt5::Network); Qt5::Gui' CMakeLists.txt
+          perl -pi -e 's;Qt5;Qt\${QT_MAJOR_VERSION};g' CMakeLists.txt
       - name: Git add & commit
         run: |
           cd cpp-qt-client-client
