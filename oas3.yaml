@@ -578,6 +578,9 @@ paths:
           example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
         - in: query
           name: new_role
+          schema:
+            type: integer
+            format: int32
           example: 0
           required: true
           description: "New role to join"
