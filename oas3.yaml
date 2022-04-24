@@ -517,6 +517,93 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /sessions/{session_id}/leave:
+    post:
+      summary: "Leave the session"
+      operationId: leaveSession
+      parameters:
+        - in: path
+          name: session_id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: "UUID of a game session (room to game pair)"
+        - in: query
+          name: user_id
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: true
+          description: "User id"
+          example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
+      responses:
+        "200":
+          description: "Successfully left the session"
+        "400":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No session with such game id"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /sessions/{session_id}/change_role:
+    post:
+      summary: "Change user's role in session"
+      operationId: changeRole
+      parameters:
+        - in: path
+          name: session_id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: "UUID of a game session (room to game pair)"
+        - in: query
+          name: user_id
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: true
+          description: "User id"
+          example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
+        - in: query
+            name: new_role
+            type: integer
+            format: int32
+            example: 0
+            required: true
+            description: "New role to join"
+      responses:
+        "200":
+          description: "Successfully changed the role in session"
+        "400":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No session with such game id"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /sessions/get_info_by_invite_code:
     get:
       summary: "Session information by invite code"
@@ -565,6 +652,7 @@ components:
         - display_name
         - description
         - players_num
+        - role_names
       properties:
         id:
           $ref: "#/components/schemas/GameId"
@@ -581,6 +669,12 @@ components:
           format: int32
           description: "Maximum (?) number of players in a session"
           example: 2
+        role_names:
+          type: array
+          items:
+            type: string
+          description: "Display names for all available roles (size must be equal to players_num)"
+          example: [ "crosses", "noughts" ]
     GameMove:
       type: object
       description: "Information about a move made by user (e.g. placement of an X in tictactoe)"
