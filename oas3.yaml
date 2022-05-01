@@ -777,6 +777,8 @@ components:
           $ref: "#/components/schemas/SessionStatus"
         invite_code:
           $ref: "#/components/schemas/InviteCode"
+        host:
+          $ref: "#/components/schemas/UserId"
         players:
           type: array
           items:
@@ -785,6 +787,7 @@ components:
         - session_id
         - game_id
         - players
+        - host
         - status
         - invite_code
     UserId:
