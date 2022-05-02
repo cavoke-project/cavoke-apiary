@@ -464,7 +464,7 @@ paths:
       security:
         - oauth_auth0:
           - id
-          - read
+          - sessions
   /sessions/{session_id}/start:
     post:
       summary: "Start the game"
@@ -619,6 +619,97 @@ paths:
           - oauth_auth0:
             - id
             - sessions
+
+  /profile/get_me:
+    get:
+      summary: Gets information about current user
+      responses:
+        "200":
+          description: "successfully got the info"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+          - oauth_auth0:
+            - id
+            - profile
+  /profile/change_name:
+    post:
+      summary: Changes name for the current user
+      parameters:
+        - in: query
+          name: new_name
+          description: New user display name
+          example: John Smith
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: "successfully changed the name"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+          - oauth_auth0:
+            - id
+            - profile
+  /users/get_user:
+    get: 
+      summary: Gets information about given user by user_id
+      parameters:
+        - in: query
+          name: req_user_id
+          description: User id P.S. `user_id` not used, as it is reserved for authentication
+          example: github|123456
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: true
+      responses:
+        "200":
+          description: "successfully changed the name"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "Not Found"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+          - oauth_auth0:
+            - id
+            - users
 components:
   schemas:
     GameInfo:
@@ -765,9 +856,8 @@ components:
         - invite_code
     UserId:
       type: string
-      format: uuid
       description: "User identifier from auth engine"
-      example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
+      example: github|123456
     GameId:
       type: string
       example: tictactoe
@@ -786,7 +876,7 @@ components:
       example: "239566"
     OccupiedPositions:
       type: object
-      example: '{"max_players": 4, "players": [{"position": 1, "user_id": "c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f"},{"position": 0, "user_id": "c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51g"}]}'
+      example: '{"max_players": 4, "players": [{"position": 1, "user_id": "github|123456"},{"position": 0, "user_id": "email|roger@example.org"}]}'
       properties:
         max_players:
           type: integer
@@ -830,8 +920,9 @@ components:
           authorizationUrl: https://cavoke.eu.auth0.com/authorize
           tokenUrl: https://cavoke.eu.auth0.com/oauth/token
           scopes:
-            id: identify current user
-            read: read general information
+            id: identify as current user
             sessions: perform operations with sessions
+            profile: read/write information about current user
+            users: read public information about other users
 #security:
 #  - 
