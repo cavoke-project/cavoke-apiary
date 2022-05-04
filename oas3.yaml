@@ -525,8 +525,8 @@ paths:
         - in: path
           name: session_id
           schema:
-            type: string
-            format: uuid
+            $ref: "#/components/schemas/SessionId"
+          example: 83896dd5-6f03-4805-8cf1-03ce6bd6077f
           required: true
           description: "UUID of a game session (room to game pair)"
         - in: query
