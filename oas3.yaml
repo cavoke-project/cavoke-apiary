@@ -305,7 +305,7 @@ paths:
           example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
       responses:
         "200":
-          description: "Succesfully found state for user"
+          description: "Successfully found state for user"
           content:
             application/json:
               schema:
@@ -375,7 +375,7 @@ paths:
           description: "Invite code"
           example: 239566
         - in: query
-          name: positon
+          name: position
           schema:
             type: integer
             format: int32
@@ -498,7 +498,7 @@ paths:
           example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
       responses:
         "200":
-          description: "Successfuly started the game"
+          description: "Successfully started the game"
         "400":
           description: "Bad request"
           content:
@@ -824,7 +824,7 @@ components:
           $ref: "#/components/schemas/SessionStatus"
         invite_code:
           $ref: "#/components/schemas/InviteCode"
-        host:
+        host_id:
           $ref: "#/components/schemas/UserId"
         players:
           type: array
@@ -834,7 +834,7 @@ components:
         - session_id
         - game_id
         - players
-        - host
+        - host_id
         - status
         - invite_code
     UserId:
