@@ -295,7 +295,7 @@ paths:
           description: "UUID of a game session (room to game pair)"
       responses:
         "200":
-          description: "Succesfully found state for user"
+          description: "Successfully found state for user"
           content:
             application/json:
               schema:
@@ -358,7 +358,7 @@ paths:
           description: "Invite code"
           example: 239566
         - in: query
-          name: positon
+          name: position
           schema:
             type: integer
             format: int32
@@ -479,7 +479,7 @@ paths:
           description: "UUID of a game session (room to game pair)"
       responses:
         "200":
-          description: "Successfuly started the game"
+          description: "Successfully started the game"
         "400":
           description: "Bad request"
           content:
@@ -502,6 +502,53 @@ paths:
         - oauth_auth0:
           - identity
           - sessions
+  /sessions/{session_id}/transfer_host:
+    post:
+      summary: "Make another player a host"
+      operationId: transferHost
+      parameters:
+        - in: path
+          name: session_id
+          schema:
+            $ref: "#/components/schemas/SessionId"
+          example: 83896dd5-6f03-4805-8cf1-03ce6bd6077f
+          required: true
+          description: "UUID of a game session (room to game pair)"
+        - in: query
+          name: user_id
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: true
+          description: "User id. Must be the host of the session"
+          example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
+        - in: query
+          name: new_host
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: true
+          description: "ID of the user who will become the new host"
+          example: 35e1b360-cbd9-11ec-9d64-0242ac120002
+      responses:
+        "200":
+          description: "Successfully made another player the host"
+        "400":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No session with such game id"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /sessions/{session_id}/leave:
     post:
       summary: "Leave the session"
@@ -844,6 +891,8 @@ components:
           $ref: "#/components/schemas/SessionStatus"
         invite_code:
           $ref: "#/components/schemas/InviteCode"
+        host_id:
+          $ref: "#/components/schemas/UserId"
         players:
           type: array
           items:
@@ -852,6 +901,7 @@ components:
         - session_id
         - game_id
         - players
+        - host_id
         - status
         - invite_code
     UserId:
