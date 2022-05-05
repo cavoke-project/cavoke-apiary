@@ -433,13 +433,6 @@ paths:
             format: uuid
           required: true
           description: "UUID of a game session (room to game pair)"
-        - in: query
-          name: user_id
-          schema:
-            $ref: "#/components/schemas/UserId"
-          required: true
-          description: "User id"
-          example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
       responses:
         "200":
           description: "successfully got the info"
@@ -515,13 +508,6 @@ paths:
           required: true
           description: "UUID of a game session (room to game pair)"
         - in: query
-          name: user_id
-          schema:
-            $ref: "#/components/schemas/UserId"
-          required: true
-          description: "User id. Must be the host of the session"
-          example: c84d0d6e-547a-4e3a-92ba-5a6ff6c3d51f
-        - in: query
           name: new_host
           schema:
             $ref: "#/components/schemas/UserId"
@@ -549,6 +535,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+      security:
+        - oauth_auth0:
+          - identity
+          - sessions
   /sessions/{session_id}/leave:
     post:
       summary: "Leave the session"
@@ -666,7 +656,6 @@ paths:
         - oauth_auth0:
           - identity
           - sessions
-
   /profile/get_me:
     get:
       summary: Gets information about current user
