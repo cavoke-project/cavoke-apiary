@@ -1,0 +1,16 @@
+name: Checks
+
+on: [push, pull_request]
+
+jobs:
+  validate-swagger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Try Generate Qt Http Client
+        uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          generator: cpp-qt-client
+          openapi-file: ${{ env.OAS_FILE }}
+env:
+  OAS_FILE: oas3.yaml
