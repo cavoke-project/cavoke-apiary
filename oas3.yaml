@@ -598,12 +598,6 @@ paths:
             $ref: "#/components/schemas/UserId"
           required: true
           description: "User id"
-        - in: query
-          name: game_id
-          schema:
-            $ref: "#/components/schemas/GameId"
-          required: false
-          description: "Game id (for UserGameStatistics)"
       responses:
         "200":
           description: "Successfully got the statistics"
@@ -611,6 +605,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GameStatistics"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No game with such id"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /statistics/user/{user_id}/game/{game_id}:
+    get:
+      summary: "UserGame statistics"
+      operationId: userGameStatistics
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: true
+          description: "User id"
+        - in: path
+          name: game_id
+          schema:
+            $ref: "#/components/schemas/GameId"
+          required: True
+          description: "Game id"
+      responses:
+        "200":
+          description: "Successfully got the statistics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserGameStatistics"
         "400":
           description: "Bad request"
         "401":
