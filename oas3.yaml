@@ -751,7 +751,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GameStatistics"
+                $ref: "#/components/schemas/UserStatistics"
         "400":
           description: "Bad request"
         "401":
