@@ -702,6 +702,108 @@ paths:
         - oauth_auth0:
           - identity
           - users
+  /statistics/game/{game_id}:
+    get:
+      summary: "Game statistics"
+      operationId: gameStatistics
+      parameters:
+        - in: path
+          name: game_id
+          schema:
+            $ref: "#/components/schemas/GameId"
+          required: true
+          description: "Game Id"
+      responses:
+        "200":
+          description: "Successfully got the statistics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GameStatistics"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No game with such id"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /statistics/user/{user_id}:
+    get:
+      summary: "User statistics"
+      operationId: userStatistics
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: true
+          description: "User id"
+      responses:
+        "200":
+          description: "Successfully got the statistics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GameStatistics"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No game with such id"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /statistics/user/{user_id}/game/{game_id}:
+    get:
+      summary: "UserGame statistics"
+      operationId: userGameStatistics
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: true
+          description: "User id"
+        - in: path
+          name: game_id
+          schema:
+            $ref: "#/components/schemas/GameId"
+          required: true
+          description: "Game id"
+      responses:
+        "200":
+          description: "Successfully got the statistics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserGameStatistics"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No game with such id"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     GameInfo:
@@ -892,6 +994,56 @@ components:
           example: "Not enough players"
       required:
         - success
+    GameStatistics:
+      type: object
+      description: "Statistics on a specific game"
+      properties:
+        average_duration_sec:
+          type: integer
+          format: int32
+          example: 35
+        average_players_count:
+          type: integer
+          format: int32
+          example: 3
+        total_time_played_sec:
+          type: integer
+          format: int32
+          example: 3600000
+        total_games_played:
+          type: integer
+          format: int32
+          example: 100345
+    UserStatistics:
+      type: object
+      description: "Statistics on a specific user"
+      properties:
+        total_time_played_sec:
+          type: integer
+          format: int32
+          example: 144
+        total_games_played:
+          type: integer
+          format: int32
+          example: 164
+    UserGameStatistics:
+      type: object
+      description: "Statistics on a specific user in a specific game"
+      properties:
+        game_id:
+          type: string
+          example: "tictactoe"
+        time_played_sec:
+          type: integer
+          format: int32
+          example: 3600
+        games_played:
+          type: integer
+          format: int32
+          example: 3
+        win_rate:
+          type: number
+          example: 0.7
     Error:
       type: object
       description: "General error result"
