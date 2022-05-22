@@ -804,6 +804,67 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /profile/my_user_statistics:
+    get:
+      summary: "User statistics for currently logged in user (via auth)"
+      operationId: userAuthStatistics
+      responses:
+        "200":
+          description: "Successfully got the statistics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserStatistics"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - oauth_auth0:
+          - identity
+  /profile/my_user_game_statistics/{game_id}:
+    get:
+      summary: "UserGame statistics for currently logged in user (via auth)"
+      operationId: userGameAuthStatistics
+      parameters:
+        - in: path
+          name: game_id
+          schema:
+            $ref: "#/components/schemas/GameId"
+          required: true
+          description: "Game id"
+      responses:
+        "200":
+          description: "Successfully got the statistics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserGameStatistics"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No game with such id"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - oauth_auth0:
+          - identity
 components:
   schemas:
     GameInfo:
