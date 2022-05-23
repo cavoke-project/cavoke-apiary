@@ -750,7 +750,7 @@ paths:
             - sessions
   /rooms/{room_id}/create_session:
     post:
-      summary: "Leave the room"
+      summary: "Create a new session inside the room"
       operationId: roomNewSession
       parameters:
         - in: path
