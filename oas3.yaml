@@ -267,8 +267,8 @@ paths:
               $ref: "#/components/schemas/GameMove"
       security:
         - oauth_auth0:
-          - identity
-          - sessions
+            - identity
+            - sessions
       responses:
         "200":
           description: "Move accepted"
@@ -310,8 +310,8 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - sessions
+            - identity
+            - sessions
   /sessions/create:
     post:
       summary: "Create a session (room to game pair) from requested cavoke game"
@@ -343,20 +343,19 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - sessions
-  /sessions/join:
+            - identity
+            - sessions
+  /sessions/{session_id}/join:
     post:
-      summary: "Join a session (will be room in future) by an invite code"
+      summary: "Join a session"
       operationId: joinSession
       parameters:
-        - in: query
-          name: invite_code
+        - in: path
+          name: session_id
           schema:
-            $ref: "#/components/schemas/InviteCode"
+            $ref: "#/components/schemas/SessionId"
           required: true
-          description: "Invite code"
-          example: 239566
+          description: "Session Id"
         - in: query
           name: position
           schema:
@@ -371,9 +370,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SessionInfo" # TODO will be room in future
+                $ref: "#/components/schemas/SessionInfo"
         "404":
-          description: "No session with such invite code"
+          description: "No session with such id"
         default:
           description: Unexpected error
           content:
@@ -382,8 +381,8 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - sessions
+            - identity
+            - sessions
   /sessions/{session_id}/validate:
     post:
       summary: "Check if the host can launch the game with current config"
@@ -419,8 +418,8 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - sessions
+            - identity
+            - sessions
   /sessions/{session_id}/get_info:
     get:
       summary: "Session information"
@@ -456,8 +455,8 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - sessions
+            - identity
+            - sessions
   /sessions/{session_id}/start:
     post:
       summary: "Start the game"
@@ -493,8 +492,8 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - sessions
+            - identity
+            - sessions
   /sessions/{session_id}/leave:
     post:
       summary: "Leave the session"
@@ -530,8 +529,8 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - sessions
+            - identity
+            - sessions
   /sessions/{session_id}/change_role:
     post:
       summary: "Change user's role in session"
@@ -575,21 +574,201 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - sessions
-  /sessions/get_info_by_invite_code:
+            - identity
+            - sessions
+  /rooms/{room_id}/get_info:
     get:
-      summary: "Session information by invite code"
-      operationId: sessionInfoByInvite
+      summary: "Room information"
+      operationId: roomInfo
+      parameters:
+        - in: path
+          name: room_id
+          schema:
+            $ref: "#/components/schemas/RoomId"
+          required: true
+          description: "UUID of a room"
+      responses:
+        "200":
+          description: "Successfully got the info"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoomInfo"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No room with such room id"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - oauth_auth0:
+            - identity
+            - sessions
+  /rooms/get_info_by_invite_code:
+    get:
+      summary: "Room information by invite code"
+      operationId: roomInfoByCode
       parameters:
         - in: query
           name: invite_code
           schema:
             $ref: "#/components/schemas/InviteCode"
           required: true
+          description: "Invite code"
       responses:
         "200":
-          description: "successfully got the info"
+          description: "Successfully got the info"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoomInfo"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No room with such invite code"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - oauth_auth0:
+            - identity
+            - sessions
+  /rooms/create:
+    post:
+      summary: "Creates a new room"
+      operationId: roomCreate
+      parameters:
+        - in: query
+          name: display_name
+          schema:
+            type: string
+          required: true
+          description: "Name of a room"
+      responses:
+        "200":
+          description: "Successfully created a new room"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoomInfo"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - oauth_auth0:
+            - identity
+            - sessions
+  /rooms/join:
+    post:
+      summary: "Join the room by invite code"
+      operationId: roomJoin
+      parameters:
+        - in: query
+          name: invite_code
+          schema:
+            $ref: "#/components/schemas/InviteCode"
+          required: true
+          description: "Invite code"
+      responses:
+        "200":
+          description: "Successfully joined the room"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoomInfo"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No room with such invite code"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - oauth_auth0:
+            - identity
+            - sessions
+  /rooms/{room_id}/leave:
+    post:
+      summary: "Leave the room"
+      operationId: roomLeave
+      parameters:
+        - in: path
+          name: room_id
+          schema:
+            $ref: "#/components/schemas/RoomId"
+          required: true
+          description: "UUID of a room"
+      responses:
+        "200":
+          description: "Successfully left the info"
+        "400":
+          description: "Bad request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No room with such room id"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - oauth_auth0:
+            - identity
+            - sessions
+  /rooms/{room_id}/create_session:
+    post:
+      summary: "Leave the room"
+      operationId: roomNewSession
+      parameters:
+        - in: path
+          name: room_id
+          schema:
+            $ref: "#/components/schemas/RoomId"
+          required: true
+          description: "UUID of a room"
+        - in: query
+          name: game_id
+          schema:
+            $ref: "#/components/schemas/GameId"
+          required: true
+          description: "String id of the game to get"
+          example: tictactoe
+      responses:
+        "200":
+          description: "Successfully created a session"
           content:
             application/json:
               schema:
@@ -601,7 +780,7 @@ paths:
         "403":
           description: "Forbidden"
         "404":
-          description: "No session with such game id"
+          description: "No room with such room id"
         default:
           description: Unexpected error
           content:
@@ -610,8 +789,8 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - sessions
+            - identity
+            - sessions
   /profile/get_me:
     get:
       summary: Gets information about current user
@@ -634,8 +813,8 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - profile
+            - identity
+            - profile
   /profile/change_name:
     post:
       summary: Changes name for the current user
@@ -666,10 +845,10 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - profile
+            - identity
+            - profile
   /users/get_user:
-    get: 
+    get:
       summary: Gets information about given user by user_id
       parameters:
         - in: query
@@ -700,8 +879,8 @@ paths:
                 $ref: "#/components/schemas/Error"
       security:
         - oauth_auth0:
-          - identity
-          - users
+            - identity
+            - users
   /statistics/game/{game_id}:
     get:
       summary: "Game statistics"
@@ -863,11 +1042,14 @@ components:
       properties:
         room_id:
           $ref: "#/components/schemas/RoomId"
+        display_name:
+          type: string
+          example: "My Room"
         invite_code:
           $ref: "#/components/schemas/InviteCode"
-        active_session:
-          $ref: "#/components/schemas/SessionInfo"
-        host_member:
+        session_id:
+          $ref: "#/components/schemas/SessionId"
+        host_id:
           $ref: "#/components/schemas/UserId"
         members:
           type: array
@@ -876,8 +1058,9 @@ components:
           description: "All users present in this room"
       required:
         - room_id
+        - display_name
         - invite_code
-        - host_member
+        - host_id
         - members
     User:
       type: object
@@ -936,8 +1119,6 @@ components:
           $ref: "#/components/schemas/GameId"
         status:
           $ref: "#/components/schemas/SessionStatus"
-        invite_code:
-          $ref: "#/components/schemas/InviteCode"
         host_id:
           $ref: "#/components/schemas/UserId"
         players:
@@ -950,7 +1131,6 @@ components:
         - players
         - host_id
         - status
-        - invite_code
     UserId:
       type: string
       description: "User identifier from auth engine"
@@ -1059,11 +1239,11 @@ components:
           type: string
           example: "Something went wrong"
   securitySchemes:
-    cavoke_oauth_auth0:    # <---- arbitrary name
+    cavoke_oauth_auth0: # <---- arbitrary name
       type: oauth2
       description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
       flows:
-        authorizationCode:   # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
+        authorizationCode: # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
           authorizationUrl: https://cavoke.eu.auth0.com/authorize
           tokenUrl: https://cavoke.eu.auth0.com/oauth/token
           scopes:
