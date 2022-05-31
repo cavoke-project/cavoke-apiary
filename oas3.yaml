@@ -719,6 +719,44 @@ paths:
       security:
         - oauth_auth0:
           - identity
+  /submit_game:
+    post:
+      summary: "Send a game for review to the cavokedev"
+      operationId: submitGame
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                game_id:
+                  type: string
+                display_name:
+                  type: string
+                description:
+                  type: string
+                upload_type:
+                  type: string
+                  enum: [ "Git Repository", "Zip Archive" ]
+                git_repo:
+                  type: string
+                client_zip:
+                  type: string
+                  format: binary
+                server_zip:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: "Successfully submitted"
+        "400":
+          description: "Bad request"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     GameInfo:
