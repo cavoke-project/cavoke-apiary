@@ -41,12 +41,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Generate Qt Http Client
+      - name: Generate Python Http Client
         uses: openapi-generators/openapitools-generator-action@v1
         with:
           generator: python
           openapi-file: ${{ env.OAS_FILE }}
-          config-file: ./files/python-openapi-gen.yml
+          config-file: ./.github/files/python-openapi-gen.yml
       - name: Git add & commit
         run: |
           cd python-client
