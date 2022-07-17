@@ -47,6 +47,7 @@ jobs:
           generator: python
           openapi-file: ${{ env.OAS_FILE }}
           config-file: ./.github/files/python-openapi-gen.yml
+          generator-tag: v6.0.1
       - name: Git add & commit
         run: |
           cd python-client
