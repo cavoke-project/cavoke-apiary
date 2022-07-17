@@ -1,4 +1,4 @@
-name: build-http
+name: build-clients
 
 on:
   push:
@@ -34,9 +34,33 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ env.BRANCH }}
+          branch: build-qt
           force: true
           directory: cpp-qt-client-client
+  build-python-httpclient:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate Qt Http Client
+        uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          generator: python
+          openapi-file: ${{ env.OAS_FILE }}
+          config-file: ./files/python-openapi-gen.yml
+      - name: Git add & commit
+        run: |
+          cd python-client
+          git init
+          git add -A
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Build Python Library"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: build-python
+          force: true
+          directory: python-client
 env:
-  BRANCH: build-httpclient
   OAS_FILE: oas3.yaml
