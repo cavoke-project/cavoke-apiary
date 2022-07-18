@@ -113,6 +113,13 @@ paths:
             $ref: "#/components/schemas/SessionId"
           required: true
           example: 83896dd5-6f03-4805-8cf1-03ce6bd6077f
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       requestBody:
         description: Game move data
         content:
@@ -147,6 +154,13 @@ paths:
             format: uuid
           required: true
           description: "UUID of a game session (room to game pair)"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully found state for user"
@@ -178,6 +192,13 @@ paths:
           required: true
           description: "String id of the game to get"
           example: tictactoe
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Created successfully"
@@ -218,6 +239,13 @@ paths:
             example: 1
           required: false
           description: "Position to join"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Joined successfully"
@@ -249,6 +277,13 @@ paths:
             format: uuid
           required: true
           description: "UUID of a game session (room to game pair)"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Validation performed"
@@ -286,6 +321,13 @@ paths:
             format: uuid
           required: true
           description: "UUID of a game session (room to game pair)"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "successfully got the info"
@@ -323,6 +365,13 @@ paths:
             format: uuid
           required: true
           description: "UUID of a game session (room to game pair)"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully started the game"
@@ -360,6 +409,13 @@ paths:
             format: uuid
           required: true
           description: "UUID of a game session (room to game pair)"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully left the session"
@@ -405,6 +461,13 @@ paths:
           example: 0
           required: true
           description: "New role to join"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully changed the role in session"
@@ -441,6 +504,13 @@ paths:
             $ref: "#/components/schemas/RoomId"
           required: true
           description: "UUID of a room"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully got the info"
@@ -477,6 +547,13 @@ paths:
             $ref: "#/components/schemas/InviteCode"
           required: true
           description: "Invite code"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully got the info"
@@ -513,6 +590,13 @@ paths:
             type: string
           required: true
           description: "Name of a room"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully created a new room"
@@ -545,6 +629,13 @@ paths:
             $ref: "#/components/schemas/InviteCode"
           required: true
           description: "Invite code"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully joined the room"
@@ -581,6 +672,13 @@ paths:
             $ref: "#/components/schemas/RoomId"
           required: true
           description: "UUID of a room"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully left the info"
@@ -620,6 +718,13 @@ paths:
           required: true
           description: "String id of the game to get"
           example: tictactoe
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully created a session"
@@ -648,6 +753,14 @@ paths:
   /profile/get_me:
     get:
       summary: Gets information about current user
+      parameters:
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "successfully got the info"
@@ -680,6 +793,13 @@ paths:
           schema:
             type: string
           required: true
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "successfully changed the name"
@@ -707,11 +827,18 @@ paths:
       parameters:
         - in: query
           name: req_user_id
-          description: User id P.S. `user_id` not used, as it is reserved for authentication
+          description: User id of the user to get infromation about (warning! not user_id)
           example: github|123456
           schema:
             $ref: "#/components/schemas/UserId"
           required: true
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "successfully changed the name"
@@ -841,6 +968,14 @@ paths:
     get:
       summary: "User statistics for currently logged in user (via auth)"
       operationId: userAuthStatistics
+      parameters:
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully got the statistics"
@@ -874,6 +1009,13 @@ paths:
             $ref: "#/components/schemas/GameId"
           required: true
           description: "Game id"
+        - in: query
+          name: user_id
+          description: "Debug query parameter for passing user_id without JWT Auth. Not used in production."
+          schema:
+            $ref: "#/components/schemas/UserId"
+          required: false
+          example: 76376d47-c5fa-4aa2-9497-0ddadcbfc5fd
       responses:
         "200":
           description: "Successfully got the statistics"
